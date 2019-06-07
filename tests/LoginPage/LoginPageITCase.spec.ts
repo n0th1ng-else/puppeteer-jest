@@ -1,21 +1,23 @@
-import { launch, Page, Browser } from 'puppeteer';
+import { Page, Browser, BrowserContext } from 'puppeteer';
 
+const browser: Browser = (global as any).browserInstance;
+let context: BrowserContext;
 let page: Page;
-let browser: Browser;
 
 describe('google page', () => {
-    beforeAll(async () => {
-        browser = await launch();
-        page = await browser.newPage();
+    beforeEach(async () => {
+        context = await browser.createIncognitoBrowserContext();
+        page = await context.newPage();
     })
 
-    it('open main page', async () => {
+    it('open google page', async () => {
         await page.goto('https://google.com');
         const text = await page.evaluate(() => document.body.textContent);
         expect(text).toContain('google');
     })
 
-    afterAll(async () => {
-        await browser.close();
+    afterEach(async () => {
+        await page.close();
+        await context.close();
     })
 })

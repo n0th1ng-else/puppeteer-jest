@@ -3,7 +3,7 @@ const chalk = require('chalk');
 const { saveBrowserEndpoint } = require('../utils/endpoint');
 
 module.exports = async function setup() {
-    console.log(chalk.yellow('Run browser instance'));
+    console.log(chalk.yellow('\nRun browser instance'));
     const browser = await puppeteer.launch({
         // always show DevTools
         // devtools: true,
