@@ -8,7 +8,7 @@ module.exports = async function setup() {
         // always show DevTools
         // devtools: true,
         // Disable headless mode
-        headless: false,
+        // headless: false,
         // Slow down the input
         // slowMo: 100
     });

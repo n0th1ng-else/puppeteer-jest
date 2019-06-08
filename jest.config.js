@@ -1,7 +1,8 @@
 module.exports = {
-  globalSetup: './config/setup.js',
-  globalTeardown: './config/teardown.js',
-  testEnvironment: './config/puppeteer.js',
+  globalSetup: '<rootDir>/config/setup.js',
+  globalTeardown: '<rootDir>/config/teardown.js',
+  testEnvironment: '<rootDir>/config/puppeteer.js',
+  setupFilesAfterEnv: ['<rootDir>/config/jest.js'],
   preset: 'jest-puppeteer',
   transform: {
     '^.+\\.jsx?$': 'babel-jest',
