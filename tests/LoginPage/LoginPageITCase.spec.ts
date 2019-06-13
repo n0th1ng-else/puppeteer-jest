@@ -1,23 +1,39 @@
 import { Page, Browser, BrowserContext } from 'puppeteer';
+import { LoginPage } from '../../pages/Login';
 
-const browser: Browser = (global as any).browserInstance;
-let context: BrowserContext;
 let page: Page;
+let browser: Browser = (global as any).browserInstance;
 
-describe('google page', () => {
-    beforeEach(async () => {
-        context = await browser.createIncognitoBrowserContext();
-        page = await context.newPage();
-    })
+let context: BrowserContext;
+let login: LoginPage;
 
-    it('open google page', async () => {
-        await page.goto('https://google.com');
-        const text = await page.evaluate(() => document.body.textContent);
-        expect(text).toContain('google');
-    })
+// TODO run API
+// TODO run DB queries
 
-    afterEach(async () => {
-        await page.close();
-        await context.close();
-    })
-})
+describe('First TS test', () => {
+	beforeEach(async () => {
+		context = await browser.createIncognitoBrowserContext();
+		page = await context.newPage();
+		login = new LoginPage(page);
+	});
+
+	it('Logs in to Tradeshift', async () => {
+		await page.goto('https://sandbox.tradeshift.com');
+		await login.isPageLoaded();
+		await login.setEmail('sen+s@tradeshift.com');
+		await login.setPassword('localPWD');
+
+		await Promise.all([
+			page.keyboard.press('Enter'),
+			page.waitForNavigation({ waitUntil: 'networkidle0' })
+		]);
+
+		const url = await page.url();
+		expect(url).toContain('Tradeshift.TaskList');
+	});
+
+	afterEach(async () => {
+		await page.close();
+		await context.close();
+	});
+});
